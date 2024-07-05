@@ -1,78 +1,102 @@
-# tflowobjtracking
+Aqui está um exemplo de `README.md` que você pode usar para explicar como configurar e treinar o seu modelo de detecção de objetos personalizado, especialmente para detectar alvos em um ambiente de jogo, como o Call of Duty.
 
-## Object Detection and Tracking with TensorFlow and OpenCV
+---
 
-This project demonstrates how to use TensorFlow and OpenCV for object detection and tracking in real-time. The script `detector.py` captures the screen, detects objects (specifically people), and tracks the detected objects using a tracking algorithm.
+# Custom Object Detection for Gaming
 
-## Requirements
+This project demonstrates how to train a custom object detection model tailored to identify specific targets in video games. The primary focus is on detecting enemy characters in gameplay footage, leveraging TensorFlow and a SSD Mobilenet model.
 
-- Python 3.x
-- TensorFlow
+## Project Structure
+
+Here's a breakdown of the project directory:
+
+```
+project/
+├── models/
+│   └── my_ssd_mobilenet_v2/
+│       ├── pipeline.config
+│       ├── train/
+│       └── eval/
+├── imgs/
+│   ├── train/
+│   │   ├── image1.jpg
+│   │   ├── image2.jpg
+│   │   └── ...
+│   └── test/
+│       ├── image1.jpg
+│       ├── image2.jpg
+│       └── ...
+├── annotations/
+│   ├── train_labels.csv
+│   ├── test_labels.csv
+│   ├── train.record
+│   └── test.record
+├── scripts/
+│   ├── generate_tfrecord.py
+│   ├── xml_to_csv.py
+│   └── label_map.pbtxt
+└── pre-trained-model/
+    └── ssd_mobilenet_v2/
+        └── checkpoint/
+            ├── checkpoint
+            ├── ckpt-0.data-00000-of-00001
+            └── ckpt-0.index
+```
+
+## Prerequisites
+
+- Python 3.7+
+- TensorFlow 2.x
+- TensorFlow Object Detection API
+- Pyglet
 - OpenCV
-- NumPy
-- mss
+- MSS (for screen capture)
 
-## Installation
+## Setup Instructions
 
-1. Clone the repository:
+1. **Install Dependencies**:
+    - Ensure TensorFlow 2.x is installed along with other Python libraries such as `numpy`, `pandas`, `opencv-python`, and `pyglet`.
 
-   ```bash
-   git clone https://github.com/your-repo/detector.git
-   cd detector
-   ```
+2. **Prepare Data**:
+    - Collect images from your game footage and annotate them using tools like LabelImg.
+    - Save annotated images in the `imgs/train` and `imgs/test` directories.
 
-2. Install the required packages:
-
-   ```bash
-   pip install tensorflow opencv-python-headless numpy mss
-   ```
-
-## Usage
-
-1. Make sure you have the required libraries installed.
-2. Run the `detector.py` script:
+3. **Convert Annotations**:
+    - Run `xml_to_csv.py` to convert XML annotations to CSV format.
+    - Run `generate_tfrecord.py` to convert these CSV files into TFRecord format, which is required by the TensorFlow Object Detection API.
 
    ```bash
-   python detector.py
+   python scripts/xml_to_csv.py
+   python scripts/generate_tfrecord.py --csv_input=annotations/train_labels.csv --image_dir=imgs/train --output_path=annotations/train.record
+   python scripts/generate_tfrecord.py --csv_input=annotations/test_labels.csv --image_dir=imgs/test --output_path=annotations/test.record
    ```
 
-3. The script will capture the screen, detect objects (people), and track the detected objects.
+4. **Modify the Pipeline Configuration**:
+    - Download and modify the `pipeline.config` for the SSD Mobilenet model from TensorFlow Model Zoo. Update paths for the `train.record`, `test.record`, `label_map.pbtxt`, and the pre-trained checkpoint.
 
-## Script Explanation
+5. **Training the Model**:
+    - Start the model training process by executing the command below. Adjust paths according to your setup.
 
-### detector.py
+    ```bash
+    python models/research/object_detection/model_main_tf2.py \
+        --model_dir=models/my_ssd_mobilenet_v2 \
+        --pipeline_config_path=models/my_ssd_mobilenet_v2/pipeline.config
+    ```
 
-The script performs the following tasks:
+    This will train your model based on the custom dataset. Monitor training progress via TensorBoard.
 
-1. **Load the Pre-trained Model**:
-   - The script loads the SSD MobileNet V2 model from TensorFlow Hub for object detection.
+6. **Evaluate and Deploy**:
+    - After training, evaluate the model's performance. If satisfied, integrate the model into your detection script (`detector.py`) to test its effectiveness in real-time or on recorded gameplay footage.
 
-2. **Set Up Screen Capture**:
-   - The script uses the `mss` library to capture a specified region of the screen.
+## Additional Notes
 
-3. **Define the Field of View (FOV)**:
-   - The FOV region is defined to focus on the central part of the screen.
+- Ensure your training data is varied and representative of the scenarios you expect the model to handle.
+- Regularly backup your model checkpoints and experiment with different configurations to optimize performance.
 
-4. **Set the Desired FPS**:
-   - The script aims to run at 60 frames per second (FPS).
+## Conclusion
 
-5. **Capture and Process the Screen**:
-   - The screen is captured, and the image is resized for processing.
+This project sets up a pipeline for training a custom object detection model that can be tailored to any specific need within video games, enhancing gameplay experience by automating detection tasks efficiently.
 
-6. **Object Detection**:
-   - The TensorFlow model detects objects (people) in the captured screen region.
+---
 
-7. **Object Tracking**:
-   - OpenCV's KCF tracker is used to track the detected objects.
-
-8. **Display the Results**:
-   - The detected and tracked objects are displayed on the screen with a pink circle around them.
-
-
-## Notes
-
-- This script is designed to work on a Windows machine.
-- Make sure your environment supports the required CPU instructions for optimal performance with TensorFlow.
-- Adjust the `FovX`, `FovY`, and `size_scale` values according to your needs for better results.
-
-
+This `README.md` file provides comprehensive instructions that guide a user through setting up the project, preparing data, training the model, and evaluating its performance, making it accessible even to those with moderate technical knowledge in machine learning and programming.
