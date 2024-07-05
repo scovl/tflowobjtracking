@@ -1,4 +1,4 @@
-# Custom Object Detection for Gaming
+# Custom Object Detection
 
 This project demonstrates how to train a custom object detection model tailored to identify specific targets in video games. The primary focus is on detecting enemy characters in gameplay footage, leveraging TensorFlow and a SSD Mobilenet model.
 
