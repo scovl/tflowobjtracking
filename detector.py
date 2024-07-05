@@ -13,21 +13,21 @@ import win32con
 import math
 
 # Load the pre-trained model from TensorFlow Hub
-detector = hub.load("https://tfhub.dev/tensorflow/centernet/resnet50v1_fpn_512x512/1")
+detector = hub.load("https://tfhub.dev/tensorflow/ssd_mobilenet_v2/2")
 
 # Set up screen capture with mss
 sct = mss()
 
 # Define the Field of View (FOV) region in pixels
-FovX = 800
-FovY = 600
+FovX = 70
+FovY = 180
 
 # Set the desired FPS
 desired_fps = 30
 frame_interval = 1.0 / desired_fps  # Interval between frames
 
 # Set the resize factor
-size_scale = 3  # Increase the value to reduce the resolution even more
+size_scale = 2  # Increase the value to reduce the resolution even more
 
 # Get the screen dimensions
 screen_width = sct.monitors[1]['width']
