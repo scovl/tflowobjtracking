@@ -1,7 +1,3 @@
-Aqui está um exemplo de `README.md` que você pode usar para explicar como configurar e treinar o seu modelo de detecção de objetos personalizado, especialmente para detectar alvos em um ambiente de jogo, como o Call of Duty.
-
----
-
 # Custom Object Detection for Gaming
 
 This project demonstrates how to train a custom object detection model tailored to identify specific targets in video games. The primary focus is on detecting enemy characters in gameplay footage, leveraging TensorFlow and a SSD Mobilenet model.
@@ -87,16 +83,3 @@ project/
 
 6. **Evaluate and Deploy**:
     - After training, evaluate the model's performance. If satisfied, integrate the model into your detection script (`detector.py`) to test its effectiveness in real-time or on recorded gameplay footage.
-
-## Additional Notes
-
-- Ensure your training data is varied and representative of the scenarios you expect the model to handle.
-- Regularly backup your model checkpoints and experiment with different configurations to optimize performance.
-
-## Conclusion
-
-This project sets up a pipeline for training a custom object detection model that can be tailored to any specific need within video games, enhancing gameplay experience by automating detection tasks efficiently.
-
----
-
-This `README.md` file provides comprehensive instructions that guide a user through setting up the project, preparing data, training the model, and evaluating its performance, making it accessible even to those with moderate technical knowledge in machine learning and programming.
